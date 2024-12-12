@@ -4,6 +4,7 @@
 import csv
 import sys
 from matplotlib import pyplot as plt 
+import numpy as np
 """
 These first five  functions serve as the basic summary statistic
 functions. Each wil return a float calcualted from a given column
@@ -16,7 +17,7 @@ summary_stats_columns = [
     "Payload to Orbit (kg)",
     "Rocket Height (m)",
     "Fairing Diameter (m)"
-]
+    ]
 """
 Calculates and returns the mean of a given colun
 Parameters:
@@ -65,7 +66,6 @@ def get_mode(column:list) -> float:
             mode = val
     return mode
         
-
 """
 Calculates and returns the max of a given column
 Parameters:
@@ -83,10 +83,6 @@ Returns: the min as a float
 """
 def get_min(column:list) -> float:
     return min(column)
-
-#DELETED CREATE PLOT
-#DELETED FILTER NULL
-#DELETED STDZ TIME AND DATE
 
 #core functions for the program
 
@@ -129,6 +125,8 @@ def get_col_data(filename, colname) -> list:
             value = row.get(colname, 'NA')
             if value not in ['NA', ''] and value.replace('.', '', 1).isdigit():
                 data.append(float(value))
+            elif value not in ['NA', '']:
+                data.append(value)
     return data
 
 """
@@ -175,10 +173,34 @@ Parameters:
 Returns:
     None
 """
-def apply_filters() -> None:
-    print("Filters Applied - PLACEHOLDER")
-    return None
+def apply_filters(filename:str, wanted_headers:str) -> None:
+    wanted_headers_list = []
+    idx_and_header_dict = dict()
+    headers_list = []
+    filtered_data = []
+    with open('C:/Users/matthew.kim/OneDrive - West Point/Desktop/USMA Academics/AY 25-1/CY 300/Project Folder/SpaceMissions.csv', mode='r') as file:
+        reader = csv.reader(file)
+        headers = next(reader)
+        for header in headers:
+            headers_list.append(header)
+        wanted_headers_list = [int(x.strip()) for x in wanted_headers.split(',')]
+        for num in wanted_headers_list:
+            if 1 <= num <= len(headers_list):
+                idx_and_header_dict[num] = headers_list[num-1]
+        print(f"{idx_and_header_dict}")
 
+        for colname in idx_and_header_dict.values():
+            print(colname)
+            data = get_col_data(filename, colname)
+            filtered_data.append(data)
+        
+        print(wanted_headers_list)
+        print(filtered_data)
+        fieldnames = wanted_headers_list
+        with open('C:/Users/matthew.kim/OneDrive - West Point/Desktop/USMA Academics/AY 25-1/CY 300/Project Folder/filtered_data.csv', mode= "w") as fout:
+            writer = csv.writer(fout)
+            
+            writer.writerows(filtered_data)
 """
 Resets all applied filters on the dataset.
 Parameters:
@@ -187,9 +209,9 @@ Returns:
     None
 """
 def reset_filters() -> None:
-    print("Filters Reset - PLACEHOLDER")
-    return None
-
+    print("File emptied")
+    with open('filtered_data.csv', mode= "w") as fout:
+        writer = csv.writer(fout)
 """
 Generates visualizations for the dataset based on selected columns.
 Parameters:
@@ -211,26 +233,13 @@ def generate_visualizations(filename, col_x, col_y):
                 x_data.append(float(x_val))
                 y_data.append(float(y_val))
 
-    sorted_data = sorted(zip(x_data, y_data))
-    sorted_x, sorted_y = zip(*sorted_data)
-
     # Plot the data
-    plt.plot(sorted_x, sorted_y, marker='o', linestyle='-')
+    plt.scatter(x_data, y_data, color='blue', label='Data Points')
     plt.xlabel(col_x)
     plt.ylabel(col_y)
-    plt.title(f"{col_x} vs {col_y} (Sorted)")
+    plt.title(f"{col_x} vs {col_y}")
     plt.show()
 
-"""
-Saves the dataset after modifications.
-Parameters:
-    None
-Returns:
-    None
-"""
-def save_data() -> None:
-    print("Data saved - PLACEHOLDER")
-    return None
 
 """
 Exits the program.
@@ -242,4 +251,3 @@ Returns:
 def exit_program():
     print("Exiting")  
     sys.exit()
-
