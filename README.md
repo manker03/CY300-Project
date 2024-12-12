@@ -34,7 +34,7 @@ calculations.
 - `SpaceMissions.csv`: The dataset used in this project.
 - `filtered_data.csv`: CSV file that contains user-requested filtered data.
 - `README.txt`: Instructions for running and using the program (this file).
-- -Ensure that the folder containing `main.py`, `data_processing.py`, and `SpaceMissions.csv` is opened in the editor - not a higher folder
+- Ensure that the folder containing `main.py`, `data_processing.py`, and `SpaceMissions.csv` is opened in the editor - not a higher folder
 3. Running the Program
 ----------------------
 To run the program:
