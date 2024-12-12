@@ -178,7 +178,7 @@ def apply_filters(filename:str, wanted_headers:str) -> None:
     idx_and_header_dict = dict()
     headers_list = []
     filtered_data = []
-    with open('C:/Users/matthew.kim/OneDrive - West Point/Desktop/USMA Academics/AY 25-1/CY 300/Project Folder/SpaceMissions.csv', mode='r') as file:
+    with open('SpaceMissions.csv', mode='r') as file:
         reader = csv.reader(file)
         headers = next(reader)
         for header in headers:
@@ -197,7 +197,7 @@ def apply_filters(filename:str, wanted_headers:str) -> None:
         print(wanted_headers_list)
         print(filtered_data)
         fieldnames = wanted_headers_list
-        with open('C:/Users/matthew.kim/OneDrive - West Point/Desktop/USMA Academics/AY 25-1/CY 300/Project Folder/filtered_data.csv', mode= "w") as fout:
+        with open('filtered_data.csv', mode= "w") as fout:
             writer = csv.writer(fout)
             
             writer.writerows(filtered_data)
